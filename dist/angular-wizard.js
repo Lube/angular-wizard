@@ -59,6 +59,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         scope: {
             currentStep: '=',
             onFinish: '&',
+            onStep: '&',
             hideIndicators: '=',
             editMode: '=',
             name: '@'
@@ -273,6 +274,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     //completed property set on scope which is used to add class/remove class from progress bar
                     $scope.selectedStep.completed = true;
                 }
+                this.step();
                 //checking to see if this is the last step.  If it is next behaves the same as finish()
                 if (index === enabledSteps.length - 1) {
                     this.finish();
@@ -304,7 +306,12 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.onFinish();
                 }
             };
-
+            
+            this.step = function() {
+                if ($scope.onStep) {
+                    $scope.onStep();
+                }
+            };
             
             this.previous = function() {
                 //getting index of current step
